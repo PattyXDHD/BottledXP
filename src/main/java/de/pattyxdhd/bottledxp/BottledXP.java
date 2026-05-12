@@ -17,6 +17,8 @@ import java.util.List;
 
 public class BottledXP extends JavaPlugin {
 
+    // Made by PattyXDHD with ♥
+
     @Getter
     private static BottledXP instance;
 
