@@ -1,0 +1,59 @@
+
+#    /$$$$$$$              /$$     /$$     /$$                 /$$ /$$   /$$ /$$$$$$$
+#    | $$__  $$            | $$    | $$    | $$                | $$| $$  / $$| $$__  $$
+#    | $$  \ $$  /$$$$$$  /$$$$$$ /$$$$$$  | $$  /$$$$$$   /$$$$$$$|  $$/ $$/| $$  \ $$
+#    | $$$$$$$  /$$__  $$|_  $$_/|_  $$_/  | $$ /$$__  $$ /$$__  $$ \  $$$$/ | $$$$$$$/
+#    | $$__  $$| $$  \ $$  | $$    | $$    | $$| $$$$$$$$| $$  | $$  >$$  $$ | $$____/
+#    | $$  \ $$| $$  | $$  | $$ /$$| $$ /$$| $$| $$_____/| $$  | $$ /$$/\  $$| $$
+#    | $$$$$$$/|  $$$$$$/  |  $$$$/|  $$$$/| $$|  $$$$$$$|  $$$$$$$| $$  \ $$| $$
+#    |_______/  \______/    \___/   \___/  |__/ \_______/ \_______/|__/  |__/|__/
+
+#            by PattyXDHD with ♥
+
+
+messages:
+  prefix: '&8▌ &2BottledXP &8» &7'
+  noPerm: '&4Dazu hast du keinen Zugriff.'
+  reload: '&aDu hast das Plugin erfolgreich neu geladen.'
+  help:
+    - ''
+    - '&7===========[ &aBottledXP &7]==========='
+    - '&e/bottledxp reload  &8-  &7Lädt die Plugin-Config neu.'
+    - '&e/bottledxp info  &8-  &7Zeigt deine XP und Flaschen Infos an.'
+    - '&e/bottledxp fill  &8-  &7Wandelt all dein XP in Flaschen um.'
+    - '&e/bottledxp fill <Anzahl>  &8-  &7Wandelt eine bestimmte Menge XP in Flaschen um.'
+    - ''
+  info:
+    - ''
+    - '&7===========[ &aBottledXP &7]==========='
+    - '&7Aktuell hast du &e%xp% &7XP.'
+    - '&7Platz für &e%space% &7XP-Flaschen.'
+    - '&aDu kannst &e%bottles% XP-Flaschen &afüllen.'
+    - ''
+  notEnoughXP: '&cDu hast nicht genügend XP.'
+  notEnoughSpace: '&cDu hast nicht genügend Platz im Inventar.'
+  filled: '&aDu hast dein XP erfolgreich in Flaschen abgefüllt.'
+  noWholeNumber: '&c%noNumber% &4ist keine Ganze Zahl.'
+  zeroBottles: '&4Es ist nicht möglich &c0 XP-Flaschen &4zu bekommen.'
+  filledAmount: '&aDu hast &e%filled% &aXP-Flaschen abgefüllt.'
+  useHelp: '&4Nutze &e/bottlexp help &4für Hilfe.'
+
+# XP Punkte die man pro Flasche bekommt
+xpPerBottle: 7
+
+# Liste aller Sound: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+sounds:
+  use: true
+  successfullyFilled: 'ENTITY_PLAYER_LEVELUP'
+
+
+# Nutze eine Block Interaction um XP-Flaschen zu füllen.
+# Liste aller Materialien: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+blockInteractFill:
+  use: true
+  block: 'EMERALD_BLOCK'
+  usedItem: 'GLASS_BOTTLE'
+  bottlesPerClick: 1
+  useHotbarMessage: true
+  hotbarMessage: '&aDu kannst noch &e%bottles% XP-Flaschen &afüllen.'
+  useSound: true

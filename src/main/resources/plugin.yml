@@ -1,0 +1,10 @@
+name: BottledXP
+author: PattyXDHD
+version: 1.0.0
+main: de.pattyxdhd.bottledxp.BottledXP
+api-version: 1.13
+
+commands:
+  bottledxp:
+    aliases:
+      - bxp
