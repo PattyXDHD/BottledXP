@@ -36,7 +36,7 @@ messages:
   noWholeNumber: '&c%noNumber% &4ist keine Ganze Zahl.'
   zeroBottles: '&4Es ist nicht möglich &c0 XP-Flaschen &4zu bekommen.'
   filledAmount: '&aDu hast &e%filled% &aXP-Flaschen abgefüllt.'
-  useHelp: '&4Nutze &e/bottlexp help &4für Hilfe.'
+  useHelp: '&4Nutze &e/bottledxp help &4für Hilfe.'
 
 # XP Punkte die man pro Flasche bekommt
 xpPerBottle: 7
@@ -46,8 +46,7 @@ sounds:
   use: true
   successfullyFilled: 'ENTITY_PLAYER_LEVELUP'
 
-
-# Nutze eine Block Interaction um XP-Flaschen zu füllen.
+# Nutze eine Block Interaktion um XP-Flaschen zu füllen.
 # Liste aller Materialien: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 blockInteractFill:
   use: true

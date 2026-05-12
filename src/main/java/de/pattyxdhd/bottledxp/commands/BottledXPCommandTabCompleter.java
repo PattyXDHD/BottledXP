@@ -13,7 +13,6 @@ public class BottledXPCommandTabCompleter implements TabCompleter {
 
     private static final List<String> commandList = Arrays.asList("help", "info", "reload", "fill");
 
-
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
 
@@ -42,6 +41,5 @@ public class BottledXPCommandTabCompleter implements TabCompleter {
             return suggestions;
         }
         return new ArrayList<>();
-
     }
 }
