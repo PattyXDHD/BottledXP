@@ -35,7 +35,7 @@ public class ExpBottleListener implements Listener {
         if (!BottledXP.getInstance().getBooleanFromConfig("blockInteractFill.use")) return;
         if (block == null) return;
 
-        if (!player.hasPermission("blotteldxp.interact")) {
+        if (!player.hasPermission("bottledxp.interact")) {
             player.sendMessage(BottledXP.getInstance().getNoPerm());
             return;
         }

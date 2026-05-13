@@ -31,7 +31,6 @@ public class BottledXPCommandTabCompleter implements TabCompleter {
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("fill")) {
             List<String> suggestions = new ArrayList<>();
-            int maxAmount = 10000;
             int[] nums = { 1, 5, 10, 16, 32, 64, 128, 256, 512, 1000 };
             for (int n : nums) {
                 String str = String.valueOf(n);
