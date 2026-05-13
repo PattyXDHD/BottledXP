@@ -44,7 +44,9 @@ xpPerBottle: 7
 # Liste aller Sound: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
 sounds:
   use: true
+  volume: 0.2
   successfullyFilled: 'ENTITY_PLAYER_LEVELUP'
+  fail: 'ENTITY_BAT_HURT'
 
 # Nutze eine Block Interaktion um XP-Flaschen zu füllen.
 # Liste aller Materialien: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
@@ -55,4 +57,7 @@ blockInteractFill:
   bottlesPerClick: 1
   useHotbarMessage: true
   hotbarMessage: '&aDu kannst noch &e%bottles% XP-Flaschen &afüllen.'
+  hotbarMessageNoPerm: '&4Dazu hast du keinen Zugriff.'
+  notEnoughXP: '&cDu hast nicht genügend XP.'
+  notEnoughSpace: '&cDu hast nicht genügend Platz im Inventar.'
   useSound: true

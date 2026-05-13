@@ -56,11 +56,13 @@ public class BottledXP extends JavaPlugin {
         if (!getStringFromConfig("messages.prefix").equals("§c<Missing config entry.>")){
             prefix = getStringFromConfig("messages.prefix");
         }
-        noPerm = getStringFromConfig("messages.noPerm").replace("%prefix%", getPrefix());
+        noPerm = prefix + getStringFromConfig("messages.noPerm");
 
         try {
             XPUtils.setXpAmount(getIntFromConfig("xpPerBottle"));
-        } catch (Exception ignored){}
+        } catch (Exception e){
+            XPUtils.setXpAmount(7);
+        }
     }
 
     public String getStringFromConfig(String configPath){
@@ -76,6 +78,14 @@ public class BottledXP extends JavaPlugin {
 
     public Integer getIntFromConfig(String configPath){
         return getConfig().getInt(configPath);
+    }
+
+    public Double getDoubleFromConfig(String configPath) {
+        return getConfig().getDouble(configPath);
+    }
+
+    public float getFloatFromConfig(String configPath) {
+        return (float) getConfig().getDouble(configPath);
     }
 
     public List<String> getStringListFromConfig(String configPath){
@@ -103,7 +113,14 @@ public class BottledXP extends JavaPlugin {
             return;
         }
 
-        player.playSound(player.getLocation(), sound, 1, 1);
+        float volume = getFloatFromConfig("sounds.volume");
+
+        if (volume == 0.0f){
+            Bukkit.getConsoleSender().sendMessage(defaultPrefix + "§4Invalid float in config.yml: §c" + volume);
+            return;
+        }
+
+        player.playSound(player.getLocation(), sound, volume, 1);
     }
 
 }

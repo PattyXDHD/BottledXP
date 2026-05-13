@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="BottleXP - 1.0.2">
+    <output-path>$USER_HOME$/Desktop/Paper-1.21.4-LocalServer/plugins</output-path>
+    <root id="archive" name="BottleXP - 1.0.2.jar">
+      <element id="module-output" name="BottledXP" />
+    </root>
+  </artifact>
+</component>

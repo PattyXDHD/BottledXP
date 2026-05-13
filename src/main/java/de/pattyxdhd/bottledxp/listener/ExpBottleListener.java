@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.ExpBottleEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
 public class ExpBottleListener implements Listener {
@@ -32,13 +33,9 @@ public class ExpBottleListener implements Listener {
         Block block = event.getClickedBlock();
 
         if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (event.getHand() != EquipmentSlot.HAND) return;
         if (!BottledXP.getInstance().getBooleanFromConfig("blockInteractFill.use")) return;
         if (block == null) return;
-
-        if (!player.hasPermission("bottledxp.interact")) {
-            player.sendMessage(BottledXP.getInstance().getNoPerm());
-            return;
-        }
 
         String blockString = BottledXP.getInstance().getStringFromConfig("blockInteractFill.block");
         Material blockMaterial = Material.matchMaterial(blockString);
@@ -49,11 +46,18 @@ public class ExpBottleListener implements Listener {
 
         ItemStack hand = event.getItem();
         if (hand == null || hand.getType() != itemMaterial) return;
+
+        if (!player.hasPermission("bottledxp.interact")) {
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getStringFromConfig("blockInteractFill.hotbarMessageNoPerm").replace("%prefix%", BottledXP.getInstance().getPrefix())));
+            BottledXP.getInstance().playConfigSound(player, "sounds.fail");
+            return;
+        }
+
         event.setCancelled(true);
 
-        int possible = Math.min(xpUtils.getBottles(player), xpUtils.getAvailableBottleSpace(player.getInventory()));
-        if (possible <= 0) {
-            player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.notEnoughSpace"));
+        if (xpUtils.getAvailableBottleSpace(player.getInventory()) <= 0) {
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getStringFromConfig("blockInteractFill.notEnoughSpace")));
+            BottledXP.getInstance().playConfigSound(player, "sounds.fail");
             return;
         }
 
@@ -68,6 +72,12 @@ public class ExpBottleListener implements Listener {
 
         if (toFill == null) {
             Bukkit.getConsoleSender().sendMessage(BottledXP.getInstance().getPrefix() + "§4Invalid Number in config.yml: §cblockInteractFill.bottlesPerClick");
+            return;
+        }
+
+        if (toFill > xpUtils.getBottles(player)){
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getStringFromConfig("blockInteractFill.notEnoughXP")));
+            BottledXP.getInstance().playConfigSound(player, "sounds.fail");
             return;
         }
 
