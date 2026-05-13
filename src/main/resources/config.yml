@@ -42,6 +42,7 @@ messages:
 xpPerBottle: 7
 
 # Liste aller Sound: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+# Um keinen Sound zu nutzen schreibe "NONE" als Sound
 sounds:
   use: true
   volume: 0.2

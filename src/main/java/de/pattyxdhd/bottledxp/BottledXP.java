@@ -80,10 +80,6 @@ public class BottledXP extends JavaPlugin {
         return getConfig().getInt(configPath);
     }
 
-    public Double getDoubleFromConfig(String configPath) {
-        return getConfig().getDouble(configPath);
-    }
-
     public float getFloatFromConfig(String configPath) {
         return (float) getConfig().getDouble(configPath);
     }
@@ -106,6 +102,11 @@ public class BottledXP extends JavaPlugin {
 
         String soundName = getStringFromConfig(configPath);
         Sound sound;
+
+        if (soundName.equals("NONE")){
+            return;
+        }
+
         try {
             sound = Sound.valueOf(soundName);
         } catch (IllegalArgumentException exception){

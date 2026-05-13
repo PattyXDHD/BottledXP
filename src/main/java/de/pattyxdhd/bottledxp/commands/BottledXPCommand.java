@@ -17,7 +17,7 @@ public class BottledXPCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         if (!(sender instanceof Player)){
-            if (args.length == 1 && args[0].toLowerCase().equals("reload")){
+            if (args.length == 1 && args[0].equalsIgnoreCase("reload")){
                 BottledXP.getInstance().reloadConfig();
                 BottledXP.getInstance().loadConfig();
                 sender.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.reload"));
