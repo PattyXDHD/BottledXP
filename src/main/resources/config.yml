@@ -62,4 +62,7 @@ blockInteractFill:
   hotbarMessageNoPerm: '&4Dazu hast du keinen Zugriff.'
   notEnoughXP: '&cDu hast nicht genügend XP.'
   notEnoughSpace: '&cDu hast nicht genügend Platz im Inventar.'
+  infoTitleFirstLine: '&e%bottles% &aXPFlaschen befüllbar.'
+  infoTitleSecondLine: '&7Dein XP: &e%xp% &7XP &8| &7Plätze im Inventar: &e%space%'
+  infoTitleStayTime: 5
   useSound: true

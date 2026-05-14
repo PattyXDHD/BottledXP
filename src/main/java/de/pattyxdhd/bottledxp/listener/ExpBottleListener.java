@@ -16,6 +16,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.List;
+
 public class ExpBottleListener implements Listener {
 
     private final XPUtils xpUtils = new XPUtils();
@@ -47,7 +49,7 @@ public class ExpBottleListener implements Listener {
         ItemStack hand = event.getItem();
         if (hand == null || hand.getType() != itemMaterial) return;
 
-        if (!player.hasPermission("bottledxp.interact")) {
+        if (!player.hasPermission("bottledxp.interact.fill")) {
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getStringFromConfig("blockInteractFill.hotbarMessageNoPerm").replace("%prefix%", BottledXP.getInstance().getPrefix())));
             BottledXP.getInstance().playConfigSound(player, "sounds.fail");
             return;
@@ -109,6 +111,55 @@ public class ExpBottleListener implements Listener {
             BottledXP.getInstance().playConfigSound(player, "sounds.successfullyFilled");
         }
 
+    }
+
+    @EventHandler
+    public void onBlockLeftClick(PlayerInteractEvent event){
+
+        Player player = event.getPlayer();
+        Block block = event.getClickedBlock();
+
+        if (event.getAction() != Action.LEFT_CLICK_BLOCK) return;
+        if (event.getHand() != EquipmentSlot.HAND) return;
+        if (!BottledXP.getInstance().getBooleanFromConfig("blockInteractFill.use")) return;
+        if (block == null) return;
+
+        String blockString = BottledXP.getInstance().getStringFromConfig("blockInteractFill.block");
+        Material blockMaterial = Material.matchMaterial(blockString);
+        String itemString = BottledXP.getInstance().getStringFromConfig("blockInteractFill.usedItem");
+        Material itemMaterial = Material.matchMaterial(itemString);
+
+        if (blockMaterial == null || block.getType() != blockMaterial) return;
+
+        ItemStack hand = event.getItem();
+        if (hand == null || hand.getType() != itemMaterial) return;
+
+        if (!player.hasPermission("bottledxp.interact.info")) {
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getStringFromConfig("blockInteractFill.hotbarMessageNoPerm").replace("%prefix%", BottledXP.getInstance().getPrefix())));
+            BottledXP.getInstance().playConfigSound(player, "sounds.fail");
+            return;
+        }
+
+        event.setCancelled(true);
+
+        int xp = xpUtils.getCurrentExp(player);
+        int space = xpUtils.getAvailableBottleSpace(player.getInventory());
+        int bottlesByXp = xpUtils.getBottles(player);
+
+        String firstLine = BottledXP.getInstance().getStringFromConfig("blockInteractFill.infoTitleFirstLine")
+                .replace("%xp%", String.valueOf(xp))
+                .replace("%space%", String.valueOf(space))
+                .replace("%bottles%", String.valueOf(bottlesByXp))
+                .replace("%prefix%", BottledXP.getInstance().getPrefix());
+        String secondLine = BottledXP.getInstance().getStringFromConfig("blockInteractFill.infoTitleSecondLine")
+                .replace("%xp%", String.valueOf(xp))
+                .replace("%space%", String.valueOf(space))
+                .replace("%bottles%", String.valueOf(bottlesByXp))
+                .replace("%prefix%", BottledXP.getInstance().getPrefix());
+
+        int stayTime = BottledXP.getInstance().getIntFromConfig("blockInteractFill.infoTitleStayTime")*20;
+
+        player.sendTitle(firstLine, secondLine, 20, stayTime, 20);
     }
 
 }
