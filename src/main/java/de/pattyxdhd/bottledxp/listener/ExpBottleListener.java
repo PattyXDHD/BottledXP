@@ -81,10 +81,28 @@ public class ExpBottleListener implements Listener {
             return;
         }
 
+
+        if (event.getPlayer().isSneaking() && player.hasPermission("bottledxp.interact.completeLevel")){
+            int maxBottles = xpUtils.getBottles(player);
+
+            if (maxBottles <= 0) {
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getStringFromConfig("blockInteractFill.notEnoughXP")));
+                BottledXP.getInstance().playConfigSound(player, "sounds.fail");
+            } else if (xpUtils.getAvailableBottleSpace(player.getInventory()) <= 0) {
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getStringFromConfig("blockInteractFill.notEnoughSpace")));
+                BottledXP.getInstance().playConfigSound(player, "sounds.fail");
+            } else {
+                xpUtils.xpBottle(player);
+                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getStringFromConfig("blockInteractFill.filledAllMessage").replace("%bottles%", String.valueOf(maxBottles))));
+                BottledXP.getInstance().playConfigSound(player, "sounds.successfullyFilled");
+            }
+            return;
+        }
+
         xpUtils.fillExactAmount(player, toFill);
 
         if (BottledXP.getInstance().getBooleanFromConfig("blockInteractFill.useHotbarMessage")) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getStringFromConfig("blockInteractFill.hotbarMessage").replace("%bottles%", String.valueOf(xpUtils.getBottles(player)))));
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getStringFromConfig("blockInteractFill.filledMessage").replace("%bottles%", String.valueOf(xpUtils.getBottles(player)))));
         }
 
         if (BottledXP.getInstance().getBooleanFromConfig("blockInteractFill.useSound")) {

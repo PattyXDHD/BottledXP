@@ -57,7 +57,8 @@ blockInteractFill:
   usedItem: 'GLASS_BOTTLE'
   bottlesPerClick: 1
   useHotbarMessage: true
-  hotbarMessage: '&aDu kannst noch &e%bottles% XP-Flaschen &afüllen.'
+  filledMessage: '&aDu kannst noch &e%bottles% XP-Flaschen &afüllen.'
+  filledAllMessage: '&aDu hast insgesamt &e%bottles% XP-Flaschen &aabgefüllt.'
   hotbarMessageNoPerm: '&4Dazu hast du keinen Zugriff.'
   notEnoughXP: '&cDu hast nicht genügend XP.'
   notEnoughSpace: '&cDu hast nicht genügend Platz im Inventar.'
