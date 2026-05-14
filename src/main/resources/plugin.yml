@@ -1,6 +1,7 @@
 name: BottledXP
 author: PattyXDHD
-version: 1.0.3
+website: https://github.com/PattyXDHD/BottledXP
+version: 1.0.4
 main: de.pattyxdhd.bottledxp.BottledXP
 api-version: 1.13
 
@@ -8,3 +9,44 @@ commands:
   bottledxp:
     aliases:
       - bxp
+
+permissions:
+  bottledxp.info:
+    info: Use the info about ur xp
+
+  bottledxp.info.other:
+    info: Allow to see the info from another Player
+
+  bottledxp.fill.completeLevel:
+    info: Allows you to fill all your XP to Bottles
+
+  bottledxp.fill.amount:
+    info: Allows you to fill an exact amount of Bottles with XP
+
+  bottledxp.reload:
+    info: Allows you to reload the Plugin config.yml
+    default: op
+
+  bottledxp.gui:
+    info: Allows you to open the XP-GUI
+
+  bottledxp.interact:
+    info: Allows you to interact for transfers your XP to Bottles
+
+  bottledxp.interact.completeLevel:
+    info: Allows you to interact for transfers all your XP to Bottles
+
+  bottledxp.info.*:
+    children:
+      bottledxp.info: true
+      bottledxp.info.other: true
+
+  bottledxp.fill.*:
+    children:
+      bottledxp.fill.amount: true
+      bottledxp.fill.completeLevel: true
+
+  bottledxp.interact.*:
+    children:
+      bottledxp.interact: true
+      bottledxp.interact.completeLevel: true

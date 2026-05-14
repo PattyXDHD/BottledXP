@@ -4,6 +4,8 @@ import com.google.common.collect.Lists;
 import de.pattyxdhd.bottledxp.commands.BottledXPCommand;
 import de.pattyxdhd.bottledxp.commands.BottledXPCommandTabCompleter;
 import de.pattyxdhd.bottledxp.listener.ExpBottleListener;
+import de.pattyxdhd.bottledxp.listener.InteractListener;
+import de.pattyxdhd.bottledxp.listener.InventoryListener;
 import de.pattyxdhd.bottledxp.utils.XPUtils;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -42,6 +44,8 @@ public class BottledXP extends JavaPlugin {
         bottlexpCommand.setTabCompleter(new BottledXPCommandTabCompleter());
 
         Bukkit.getPluginManager().registerEvents(new ExpBottleListener(), this);
+        Bukkit.getPluginManager().registerEvents(new InteractListener(), this);
+        Bukkit.getPluginManager().registerEvents(new InventoryListener(), this);
 
         Bukkit.getConsoleSender().sendMessage(defaultPrefix + "§aPlugin geladen.");
         Bukkit.getConsoleSender().sendMessage(defaultPrefix + "§9Version: §bv" + getDescription().getVersion());

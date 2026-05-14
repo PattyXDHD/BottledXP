@@ -1,5 +1,6 @@
 package de.pattyxdhd.bottledxp.commands;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -11,7 +12,7 @@ import java.util.List;
 
 public class BottledXPCommandTabCompleter implements TabCompleter {
 
-    private static final List<String> commandList = Arrays.asList("help", "info", "reload", "fill");
+    private static final List<String> commandList = Arrays.asList("help", "info", "reload", "fill", "gui");
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
@@ -34,6 +35,16 @@ public class BottledXPCommandTabCompleter implements TabCompleter {
             int[] nums = { 1, 5, 10, 16, 32, 64, 128, 256, 512, 1000 };
             for (int n : nums) {
                 String str = String.valueOf(n);
+                if (str.startsWith(args[1]))
+                    suggestions.add(str);
+            }
+            return suggestions;
+        }
+
+        if (args.length == 2 && args[0].equalsIgnoreCase("info")) {
+            List<String> suggestions = new ArrayList<>();
+            for (Player n : Bukkit.getOnlinePlayers()) {
+                String str = String.valueOf(n.getName());
                 if (str.startsWith(args[1]))
                     suggestions.add(str);
             }

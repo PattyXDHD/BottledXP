@@ -1,7 +1,10 @@
 package de.pattyxdhd.bottledxp.commands;
 
 import de.pattyxdhd.bottledxp.BottledXP;
+import de.pattyxdhd.bottledxp.inventory.BottleInventory;
 import de.pattyxdhd.bottledxp.utils.XPUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,9 +13,6 @@ import org.bukkit.entity.Player;
 import java.util.List;
 
 public class BottledXPCommand implements CommandExecutor {
-
-    private final XPUtils xpUtils = new XPUtils();
-
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
@@ -32,11 +32,17 @@ public class BottledXPCommand implements CommandExecutor {
 
         if (args.length == 0){
             sendHelp(player);
-        }else {
+        } else if (args.length == 2 && args[0].equalsIgnoreCase("info")) {
+
+            OfflinePlayer value = Bukkit.getOfflinePlayer(args[1]);
+            showInfoForOtherPlayer(player, value);
+
+        } else {
             switch (args[0].toLowerCase()){
                 case "info": showInfo(player); return false;
                 case "fill": handelFill(player, args); return false;
                 case "reload": reloadConfig(player); return false;
+                case "gui": openGui(player);return false;
                 default: sendHelp(player); return false;
             }
         }
@@ -51,16 +57,30 @@ public class BottledXPCommand implements CommandExecutor {
         }
     }
 
-    private void showInfo(Player player) {
-        if (!player.hasPermission("bottledxp.info")){
+    private void openGui(Player player){
+
+        if (!player.hasPermission("bottledxp.gui")){
             player.sendMessage(BottledXP.getInstance().getNoPerm());
-            BottledXP.getInstance().playConfigSound(player, "sounds.fail");
+            BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
             return;
         }
 
-        int xp = xpUtils.getCurrentExp(player);
-        int space = xpUtils.getAvailableBottleSpace(player.getInventory());
-        int bottlesByXp = xpUtils.getBottles(player);
+        player.openInventory(BottleInventory.getInventory(player));
+
+    }
+
+    private void showInfo(Player player) {
+        if (!player.hasPermission("bottledxp.info")){
+            player.sendMessage(BottledXP.getInstance().getNoPerm());
+            BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
+            return;
+        }
+
+        int xp = XPUtils.getCurrentExp(player);
+        int space = XPUtils.getAvailableBottleSpace(player.getInventory());
+        int bottlesByXp = XPUtils.getBottles(player);
+        int levels = player.getLevel();
+        int points = XPUtils.getCurrentLevelXp(player);
         List<String> infoText = BottledXP.getInstance().getStringListFromConfig("messages.info");
 
         for (String text : infoText){
@@ -68,8 +88,47 @@ public class BottledXPCommand implements CommandExecutor {
                     .replace("%xp%", String.valueOf(xp))
                     .replace("%space%", String.valueOf(space))
                     .replace("%bottles%", String.valueOf(bottlesByXp))
+                    .replace("%level%", String.valueOf(levels))
+                    .replace("%points%", String.valueOf(points))
                     .replace("%prefix%", BottledXP.getInstance().getPrefix()));
         }
+        BottledXP.getInstance().playConfigSound(player, "sounds.helpSound");
+    }
+
+    private void showInfoForOtherPlayer(Player sender, OfflinePlayer value) {
+
+        if (!sender.hasPermission("bottledxp.info.other")){
+            sender.sendMessage(BottledXP.getInstance().getNoPerm());
+            BottledXP.getInstance().playConfigSound(sender, "sounds.failSound");
+            return;
+        }
+
+        if (!value.isOnline()){
+            sender.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.playerNotOnline").replace("%name%", value.getName()));
+            return;
+        }
+
+        Player info = Bukkit.getPlayer(value.getUniqueId());
+
+        int xp = XPUtils.getCurrentExp(info);
+        int space = XPUtils.getAvailableBottleSpace(info.getInventory());
+        int bottlesByXp = XPUtils.getBottles(info);
+        int levels = info.getLevel();
+        int points = XPUtils.getCurrentLevelXp(info);
+        List<String> infoText = BottledXP.getInstance().getStringListFromConfig("messages.infoOther");
+
+        for (String text : infoText){
+            sender.sendMessage(text
+                    .replace("%xp%", String.valueOf(xp))
+                    .replace("%space%", String.valueOf(space))
+                    .replace("%bottles%", String.valueOf(bottlesByXp))
+                    .replace("%level%", String.valueOf(levels))
+                    .replace("%points%", String.valueOf(points))
+                    .replace("%prefix%", BottledXP.getInstance().getPrefix())
+                    .replace("%playerName%", info.getName()));
+        }
+
+        BottledXP.getInstance().playConfigSound(sender, "sounds.helpSound");
     }
 
     private void handelFill(Player player, String[] args){
@@ -77,26 +136,26 @@ public class BottledXPCommand implements CommandExecutor {
             if (args.length == 1){
                 if (!player.hasPermission("bottledxp.fill.completeLevel")){
                     player.sendMessage(BottledXP.getInstance().getNoPerm());
-                    BottledXP.getInstance().playConfigSound(player, "sounds.fail");
+                    BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
                     return;
                 }
 
-                if (xpUtils.getBottles(player) <= 0) {
+                if (XPUtils.getBottles(player) <= 0) {
                     player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.notEnoughXP"));
-                    BottledXP.getInstance().playConfigSound(player, "sounds.fail");
-                } else if (xpUtils.getAvailableBottleSpace(player.getInventory()) <= 0) {
+                    BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
+                } else if (XPUtils.getAvailableBottleSpace(player.getInventory()) <= 0) {
                     player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.notEnoughSpace"));
-                    BottledXP.getInstance().playConfigSound(player, "sounds.fail");
+                    BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
                 } else {
-                    xpUtils.xpBottle(player);
+                    XPUtils.xpBottle(player);
                     player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.filled"));
-                    BottledXP.getInstance().playConfigSound(player, "sounds.successfullyFilled");
+                    BottledXP.getInstance().playConfigSound(player, "sounds.successfulSound");
                 }
 
             } else {
                 if (!player.hasPermission("bottledxp.fill.amount")){
                     player.sendMessage(BottledXP.getInstance().getNoPerm());
-                    BottledXP.getInstance().playConfigSound(player, "sounds.fail");
+                    BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
                     return;
                 }
 
@@ -106,13 +165,13 @@ public class BottledXPCommand implements CommandExecutor {
                     requested = Integer.parseInt(args[1]);
                 } catch (NumberFormatException exception){
                     player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.noWholeNumber").replace("%noNumber%", args[1]));
-                    BottledXP.getInstance().playConfigSound(player, "sounds.fail");
+                    BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
                     return;
                 }
 
                 if (requested <= 0) {
                     player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.zeroBottles"));
-                    BottledXP.getInstance().playConfigSound(player, "sounds.fail");
+                    BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
                     return;
                 }
 
@@ -121,17 +180,17 @@ public class BottledXPCommand implements CommandExecutor {
                     requested = maxAllowed;
                 }
 
-                int possible = Math.min(xpUtils.getBottles(player), xpUtils.getAvailableBottleSpace(player.getInventory()));
+                int possible = Math.min(XPUtils.getBottles(player), XPUtils.getAvailableBottleSpace(player.getInventory()));
                 if (possible <= 0) {
                     player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.notEnoughSpace"));
-                    BottledXP.getInstance().playConfigSound(player, "sounds.fail");
+                    BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
                     return;
                 }
 
                 int toFill = Math.min(requested, possible);
-                xpUtils.fillExactAmount(player, toFill);
+                XPUtils.fillExactAmount(player, toFill);
                 player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.filledAmount").replace("%filled%", String.valueOf(toFill)));
-                BottledXP.getInstance().playConfigSound(player, "sounds.successfullyFilled");
+                BottledXP.getInstance().playConfigSound(player, "sounds.successfulSound");
             }
         } else {
             player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.useHelp"));
@@ -141,9 +200,11 @@ public class BottledXPCommand implements CommandExecutor {
     private void reloadConfig(Player player) {
         if (!player.hasPermission("bottledxp.reload")){
             player.sendMessage(BottledXP.getInstance().getNoPerm());
-            BottledXP.getInstance().playConfigSound(player, "sounds.fail");
+            BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
             return;
         }
+
+        BottledXP.getInstance().saveDefaultConfig();
 
         BottledXP.getInstance().reloadConfig();
         BottledXP.getInstance().loadConfig();
