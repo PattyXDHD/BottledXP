@@ -115,7 +115,9 @@ public class InventoryListener implements Listener {
 
                 XPUtils.convertBottlesToXp(player);
                 player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.convertSuccessful")
-                        .replace("%bottles%", String.valueOf(converted)));
+                        .replace("%bottles%", String.valueOf(converted))
+                        .replace("%level%", String.valueOf(XPUtils.getPreviewLevelAfterBottleConvert(player, converted)))
+                        .replace("%points%", String.valueOf(XPUtils.getPreviewPointsAfterBottleConvert(player, converted))));
                 BottledXP.getInstance().playConfigSound(player, "sounds.successfulSound");
                 player.closeInventory();
                 return;
