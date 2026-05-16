@@ -41,16 +41,18 @@ public class BottledXPCommandTabCompleter implements TabCompleter {
             return suggestions;
         }
 
-        // TODO: fix the tab complete for Player Names that don't match the Case
         if (args.length == 2 && args[0].equalsIgnoreCase("info")) {
             List<String> suggestions = new ArrayList<>();
-            for (Player n : Bukkit.getOnlinePlayers()) {
-                String str = String.valueOf(n.getName());
-                if (str.startsWith((args[1])))
-                    suggestions.add(str);
+            String input = args[1].toLowerCase();
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                String name = player.getName();
+                if (name.toLowerCase().startsWith(input)) {
+                    suggestions.add(name);
+                }
             }
             return suggestions;
         }
+
         return new ArrayList<>();
     }
 }
