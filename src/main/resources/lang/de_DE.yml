@@ -1,0 +1,75 @@
+
+#
+#     ,----.
+#    '  .-./    ,---. ,--.--.,--,--,--. ,--,--.,--,--,
+#    |  | .---.| .-. :|  .--'|        |' ,-.  ||      \
+#    '  '--'  |\   --.|  |   |  |  |  |\ '-'  ||  ||  |
+#     `------'  `----'`--'   `--`--`--' `--`--'`--''--'
+#
+#       Translated by PattyXDHD
+
+
+# Command & Console Messages
+messages:
+  prefix: '&8▌ &2BottledXP &8» &7'
+  noPerm: '&4Dazu hast du keinen Zugriff.'
+  reload: '&aDu hast das Plugin erfolgreich neu geladen.'
+  help:
+    - ''
+    - '&7===========[ &aBottledXP &7]==========='
+    - '&e/bottledxp reload  &8-  &7Lädt die Plugin-Config neu.'
+    - '&e/bottledxp info [Name]  &8-  &7Zeigt deine XP und Flaschen Infos an.'
+    - '&e/bottledxp fill [Anzahl] &8-  &7Wandelt dein XP in Flaschen um.'
+    - '&e/bottledxp gui  &8-  &7Öffnet die BottledXP-GUI.'
+    - ''
+  info:
+    - ''
+    - '&7===========[ &aBottledXP &7]==========='
+    - '&7Aktuell hast du &e%xp% &7XP. &7(%level% Level / %points% XP-Punkte)'
+    - '&7Platz für &e%space% &7XP-Flaschen.'
+    - '&aDu kannst &e%bottles% &aXP-Flaschen füllen.'
+    - ''
+  infoOther:
+    - ''
+    - '&7===========[ &aBottledXP &7]==========='
+    - '&7Info von: &6%playerName%'
+    - '&7Aktuell hast du &e%xp% &7XP. &7(%level% Level / %points% XP-Punkte)'
+    - '&7Platz für &e%space% &7XP-Flaschen.'
+    - '&aDu kannst &e%bottles% &aXP-Flaschen füllen.'
+    - ''
+  notEnoughXP: '&cDu hast nicht genügend XP.'
+  notEnoughSpace: '&cDu hast nicht genügend Platz im Inventar.'
+  filled: '&aDu hast dein XP erfolgreich in Flaschen abgefüllt.'
+  noWholeNumber: '&c%noNumber% &4ist keine Ganze Zahl.'
+  zeroBottles: '&4Es ist nicht möglich &c0 XP-Flaschen &4zu bekommen.'
+  filledAmount: '&aDu hast &e%filled% &aXP-Flaschen abgefüllt.'
+  useHelp: '&4Nutze &e/bottledxp help &4für Hilfe.'
+  playerNotOnline: '&cDer Spieler &e%name% &cist nicht Online.'
+
+# Messages for Interaction
+blockInteractFill:
+  filledMessage: '&aDu kannst noch &e%bottles% &aXP-Flaschen füllen.'
+  filledAllMessage: '&aDu hast insgesamt &e%bottles% &aXP-Flaschen abgefüllt.'
+  hotbarMessageNoPerm: '&4Dazu hast du keinen Zugriff.'
+  notEnoughXP: '&cDu hast nicht genügend XP.'
+  notEnoughSpace: '&cDu hast nicht genügend Platz im Inventar.'
+  infoTitleFirstLine: '&e%bottles% &aXP-Flaschen befüllbar.'
+  infoTitleSecondLine: '&7Dein XP: &e%xp% &7XP &8| &7Plätze im Inventar: &e%space%'
+
+# Text and Messages for the inventory GUI
+inventory:
+  inventoryName: '&8▌ &2BottledXP'
+  infoItemName: '&8▌ &aXP-Info'
+  infoItemLore:
+    - ''
+    - '&7Aktuell hast du &e%xp% &7XP. &7(%level% Level / %points% XP-Punkte)'
+    - '&7Platz für &e%space% &7XP-Flaschen.'
+    - '&aDu kannst &e%bottles% &aXP-Flaschen füllen.'
+    - ''
+  applyItem: '&aKlicke zum umwandeln.'
+  minusItem: '&c- %normal% &7(ShiftClick: -%shift%)'
+  plusItem: '&a+ %normal% &7(ShiftClick: +%shift%)'
+  mathLore:
+    - ''
+    - '  &7Du bekommst &e%bottle% &7XP-Flaschen.  '
+    - ''

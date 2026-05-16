@@ -3,6 +3,7 @@ package de.pattyxdhd.bottledxp;
 import com.google.common.collect.Lists;
 import de.pattyxdhd.bottledxp.commands.BottledXPCommand;
 import de.pattyxdhd.bottledxp.commands.BottledXPCommandTabCompleter;
+import de.pattyxdhd.bottledxp.language.LanguageManager;
 import de.pattyxdhd.bottledxp.listener.ExpBottleListener;
 import de.pattyxdhd.bottledxp.listener.InteractListener;
 import de.pattyxdhd.bottledxp.listener.InventoryListener;
@@ -30,43 +31,56 @@ public class BottledXP extends JavaPlugin {
     private final String defaultPrefix = "§8▌ §aBottledXP §8» §7";
 
     @Getter
-    private String noPerm = prefix + "§4Dazu hast du keinen Zugriff.";
+    private String noPerm = prefix + "§4You don''t have Permission for that.";
+
+    @Getter
+    private LanguageManager languageManager;
 
     @Override
     public void onEnable() {
         instance = this;
 
-        saveDefaultConfig();
         loadConfig();
+        loadCommands();
+        loadListeners();
 
-        PluginCommand bottlexpCommand = getCommand("bottledxp");
-        bottlexpCommand.setExecutor(new BottledXPCommand());
-        bottlexpCommand.setTabCompleter(new BottledXPCommandTabCompleter());
-
-        Bukkit.getPluginManager().registerEvents(new ExpBottleListener(), this);
-        Bukkit.getPluginManager().registerEvents(new InteractListener(), this);
-        Bukkit.getPluginManager().registerEvents(new InventoryListener(), this);
-
-        Bukkit.getConsoleSender().sendMessage(defaultPrefix + "§aPlugin geladen.");
+        Bukkit.getConsoleSender().sendMessage(defaultPrefix + "§aPlugin enabled.");
         Bukkit.getConsoleSender().sendMessage(defaultPrefix + "§9Version: §bv" + getDescription().getVersion());
     }
 
     @Override
     public void onDisable() {
-        Bukkit.getConsoleSender().sendMessage(defaultPrefix + "§cPlugin entladen.");
+        Bukkit.getConsoleSender().sendMessage(defaultPrefix + "§cPlugin disabled.");
     }
 
     public void loadConfig(){
-        if (!getStringFromConfig("messages.prefix").equals("§c<Missing config entry.>")){
-            prefix = getStringFromConfig("messages.prefix");
-        }
-        noPerm = prefix + getStringFromConfig("messages.noPerm");
+
+        saveDefaultConfig();
+
+        languageManager = new LanguageManager(this);
+        languageManager.loadLanguage();
+
+        prefix = languageManager.getMessage("messages.prefix");
+        noPerm = prefix + languageManager.getMessage("messages.noPerm");
 
         try {
             XPUtils.setXpAmount(getIntFromConfig("xpPerBottle"));
         } catch (Exception e){
             XPUtils.setXpAmount(7);
         }
+
+    }
+
+    private void loadListeners() {
+        Bukkit.getPluginManager().registerEvents(new ExpBottleListener(), this);
+        Bukkit.getPluginManager().registerEvents(new InteractListener(), this);
+        Bukkit.getPluginManager().registerEvents(new InventoryListener(), this);
+    }
+
+    private void loadCommands() {
+        PluginCommand bottledxpCommand = getCommand("bottledxp");
+        bottledxpCommand.setExecutor(new BottledXPCommand());
+        bottledxpCommand.setTabCompleter(new BottledXPCommandTabCompleter());
     }
 
     public String getStringFromConfig(String configPath){

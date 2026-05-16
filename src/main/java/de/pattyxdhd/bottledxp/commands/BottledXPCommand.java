@@ -20,7 +20,7 @@ public class BottledXPCommand implements CommandExecutor {
             if (args.length == 1 && args[0].equalsIgnoreCase("reload")){
                 BottledXP.getInstance().reloadConfig();
                 BottledXP.getInstance().loadConfig();
-                sender.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.reload"));
+                sender.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.reload"));
              return false;
             }
 
@@ -51,7 +51,7 @@ public class BottledXPCommand implements CommandExecutor {
     }
 
     private void sendHelp(Player player) {
-        List<String> infoText = BottledXP.getInstance().getStringListFromConfig("messages.help");
+        List<String> infoText = BottledXP.getInstance().getLanguageManager().getMessageList("messages.help");
         for (String text : infoText){
             player.sendMessage(text.replace("%prefix%", BottledXP.getInstance().getPrefix()));
         }
@@ -81,7 +81,7 @@ public class BottledXPCommand implements CommandExecutor {
         int bottlesByXp = XPUtils.getBottles(player);
         int levels = player.getLevel();
         int points = XPUtils.getCurrentLevelXp(player);
-        List<String> infoText = BottledXP.getInstance().getStringListFromConfig("messages.info");
+        List<String> infoText = BottledXP.getInstance().getLanguageManager().getMessageList("messages.info");
 
         for (String text : infoText){
             player.sendMessage(text
@@ -104,7 +104,7 @@ public class BottledXPCommand implements CommandExecutor {
         }
 
         if (!value.isOnline()){
-            sender.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.playerNotOnline").replace("%name%", value.getName()));
+            sender.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.playerNotOnline").replace("%name%", value.getName()));
             return;
         }
 
@@ -115,7 +115,7 @@ public class BottledXPCommand implements CommandExecutor {
         int bottlesByXp = XPUtils.getBottles(info);
         int levels = info.getLevel();
         int points = XPUtils.getCurrentLevelXp(info);
-        List<String> infoText = BottledXP.getInstance().getStringListFromConfig("messages.infoOther");
+        List<String> infoText = BottledXP.getInstance().getLanguageManager().getMessageList("messages.infoOther");
 
         for (String text : infoText){
             sender.sendMessage(text
@@ -141,14 +141,14 @@ public class BottledXPCommand implements CommandExecutor {
                 }
 
                 if (XPUtils.getBottles(player) <= 0) {
-                    player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.notEnoughXP"));
+                    player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.notEnoughXP"));
                     BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
                 } else if (XPUtils.getAvailableBottleSpace(player.getInventory()) <= 0) {
-                    player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.notEnoughSpace"));
+                    player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.notEnoughSpace"));
                     BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
                 } else {
                     XPUtils.xpBottle(player);
-                    player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.filled"));
+                    player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.filled"));
                     BottledXP.getInstance().playConfigSound(player, "sounds.successfulSound");
                 }
 
@@ -164,13 +164,13 @@ public class BottledXPCommand implements CommandExecutor {
                 try {
                     requested = Integer.parseInt(args[1]);
                 } catch (NumberFormatException exception){
-                    player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.noWholeNumber").replace("%noNumber%", args[1]));
+                    player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.noWholeNumber").replace("%noNumber%", args[1]));
                     BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
                     return;
                 }
 
                 if (requested <= 0) {
-                    player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.zeroBottles"));
+                    player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.zeroBottles"));
                     BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
                     return;
                 }
@@ -182,18 +182,18 @@ public class BottledXPCommand implements CommandExecutor {
 
                 int possible = Math.min(XPUtils.getBottles(player), XPUtils.getAvailableBottleSpace(player.getInventory()));
                 if (possible <= 0) {
-                    player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.notEnoughSpace"));
+                    player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.notEnoughSpace"));
                     BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
                     return;
                 }
 
                 int toFill = Math.min(requested, possible);
                 XPUtils.fillExactAmount(player, toFill);
-                player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.filledAmount").replace("%filled%", String.valueOf(toFill)));
+                player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.filledAmount").replace("%filled%", String.valueOf(toFill)));
                 BottledXP.getInstance().playConfigSound(player, "sounds.successfulSound");
             }
         } else {
-            player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.useHelp"));
+            player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.useHelp"));
         }
     }
 
@@ -204,11 +204,9 @@ public class BottledXPCommand implements CommandExecutor {
             return;
         }
 
-        BottledXP.getInstance().saveDefaultConfig();
-
         BottledXP.getInstance().reloadConfig();
         BottledXP.getInstance().loadConfig();
-        player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getStringFromConfig("messages.reload"));
+        player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.reload"));
     }
 
 }

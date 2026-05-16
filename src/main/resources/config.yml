@@ -10,48 +10,15 @@
 
 #            by PattyXDHD with ♥
 
+# Change the language
+# default available: en_US, de_DE
+language: 'en_US'
 
-messages:
-  prefix: '&8▌ &2BottledXP &8» &7'
-  noPerm: '&4Dazu hast du keinen Zugriff.'
-  reload: '&aDu hast das Plugin erfolgreich neu geladen.'
-  help:
-    - ''
-    - '&7===========[ &aBottledXP &7]==========='
-    - '&e/bottledxp reload  &8-  &7Lädt die Plugin-Config neu.'
-    - '&e/bottledxp info [Name]  &8-  &7Zeigt deine XP und Flaschen Infos an.'
-    - '&e/bottledxp fill [Anzahl] &8-  &7Wandelt dein XP in Flaschen um.'
-    - '&e/bottledxp gui  &8-  &7Öffnet die BottledXP-GUI.'
-    - ''
-  info:
-    - ''
-    - '&7===========[ &aBottledXP &7]==========='
-    - '&7Aktuell hast du &e%xp% &7XP. &7(%level% Level / %points% XP-Punkte)'
-    - '&7Platz für &e%space% &7XP-Flaschen.'
-    - '&aDu kannst &e%bottles% XP-Flaschen &afüllen.'
-    - ''
-  infoOther:
-    - ''
-    - '&7===========[ &aBottledXP &7]==========='
-    - '&7Info von: &6%playerName%'
-    - '&7Aktuell hast du &e%xp% &7XP. &7(%level% Level / %points% XP-Punkte)'
-    - '&7Platz für &e%space% &7XP-Flaschen.'
-    - '&aDu kannst &e%bottles% XP-Flaschen &afüllen.'
-    - ''
-  notEnoughXP: '&cDu hast nicht genügend XP.'
-  notEnoughSpace: '&cDu hast nicht genügend Platz im Inventar.'
-  filled: '&aDu hast dein XP erfolgreich in Flaschen abgefüllt.'
-  noWholeNumber: '&c%noNumber% &4ist keine Ganze Zahl.'
-  zeroBottles: '&4Es ist nicht möglich &c0 XP-Flaschen &4zu bekommen.'
-  filledAmount: '&aDu hast &e%filled% &aXP-Flaschen abgefüllt.'
-  useHelp: '&4Nutze &e/bottledxp help &4für Hilfe.'
-  playerNotOnline: '&cDer Spieler &e%name% &cist nicht Online.'
-
-# XP Punkte die man pro Flasche bekommt
+# XP points you earn per bottle
 xpPerBottle: 7
 
-# Liste aller Sound: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
-# Um keinen Sound zu nutzen schreibe "NONE" als Sound
+# List of all sounds: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Sound.html
+# To use no sound, enter ‘NONE’ as the sound
 sounds:
   use: true
   volume: 0.2
@@ -61,42 +28,21 @@ sounds:
   helpSound: 'ENTITY_ITEM_PICKUP'
   failChangeGuiNumber: 'BLOCK_ANVIL_PLACE'
 
-# Nutze eine Block Interaktion um XP-Flaschen zu füllen.
-# Liste aller Materialien: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
+# Use a block interaction to fill XP bottles.
+# List of all materials: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 blockInteractFill:
   use: true
   block: 'EMERALD_BLOCK'
   usedItem: 'GLASS_BOTTLE'
   bottlesPerClick: 1
   useHotbarMessage: true
-  filledMessage: '&aDu kannst noch &e%bottles% XP-Flaschen &afüllen.'
-  filledAllMessage: '&aDu hast insgesamt &e%bottles% XP-Flaschen &aabgefüllt.'
-  hotbarMessageNoPerm: '&4Dazu hast du keinen Zugriff.'
-  notEnoughXP: '&cDu hast nicht genügend XP.'
-  notEnoughSpace: '&cDu hast nicht genügend Platz im Inventar.'
-  infoTitleFirstLine: '&e%bottles% &aXP-Flaschen befüllbar.'
-  infoTitleSecondLine: '&7Dein XP: &e%xp% &7XP &8| &7Plätze im Inventar: &e%space%'
   infoTitleStayTime: 5
   useSound: true
   replaceWithGUI: false
 
+# Change the calculation quantity in the inventory.
 inventory:
-  inventoryName: '&8▌ &2BottledXP'
-  infoItemName: '&8▌ &aXP-Info'
-  infoItemLore:
-    - ''
-    - '&7Aktuell hast du &e%xp% &7XP. &7(%level% Level / %points% XP-Punkte)'
-    - '&7Platz für &e%space% &7XP-Flaschen.'
-    - '&aDu kannst &e%bottles% XP-Flaschen &afüllen.'
-    - ''
-  applyItem: '&aKlicke zum umwandeln.'
-  minusItem: '&c- %normal% &7(ShiftClick: -%shift%)'
   minusAmountNormal: 1
   minusAmountShift: 10
-  plusItem: '&a+ %normal% &7(ShiftClick: +%shift%)'
   plusAmountNormal: 1
   plusAmountShift: 10
-  mathLore:
-    - ''
-    - '  &7Du bekommst &e%bottle% &7XP-Flaschen.  '
-    - ''
