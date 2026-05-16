@@ -2,6 +2,7 @@ package de.pattyxdhd.bottledxp;
 
 import de.pattyxdhd.bottledxp.commands.BottledXPCommand;
 import de.pattyxdhd.bottledxp.commands.BottledXPCommandTabCompleter;
+import de.pattyxdhd.bottledxp.inventory.BottleInventory;
 import de.pattyxdhd.bottledxp.language.LanguageManager;
 import de.pattyxdhd.bottledxp.listener.ExpBottleListener;
 import de.pattyxdhd.bottledxp.listener.InteractListener;
@@ -65,6 +66,8 @@ public class BottledXP extends JavaPlugin {
         } catch (Exception e){
             XPUtils.setXpAmount(7);
         }
+
+        BottleInventory.loadItemNames();
 
     }
 

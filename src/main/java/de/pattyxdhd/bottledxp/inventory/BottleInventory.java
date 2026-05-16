@@ -18,15 +18,20 @@ import java.util.ArrayList;
 public class BottleInventory {
 
     @Getter
-    private static String minusItemName = BottledXP.getInstance().getLanguageManager().getMessage("inventory.minusItem")
-            .replace("%normal%", BottledXP.getInstance().getIntFromConfig("inventory.minusAmountNormal").toString())
-            .replace("%shift%", BottledXP.getInstance().getIntFromConfig("inventory.minusAmountShift").toString());
+    private static String minusItemName;
 
     @Getter
-    private static String plusItemName = BottledXP.getInstance().getLanguageManager().getMessage("inventory.plusItem")
-            .replace("%normal%", BottledXP.getInstance().getIntFromConfig("inventory.plusAmountNormal").toString())
-            .replace("%shift%", BottledXP.getInstance().getIntFromConfig("inventory.plusAmountShift").toString());
+    private static String plusItemName;
 
+    public static void loadItemNames(){
+        minusItemName = BottledXP.getInstance().getLanguageManager().getMessage("inventory.minusItem")
+                .replace("%normal%", BottledXP.getInstance().getIntFromConfig("inventory.minusAmountNormal").toString())
+                .replace("%shift%", BottledXP.getInstance().getIntFromConfig("inventory.minusAmountShift").toString());
+
+        plusItemName = BottledXP.getInstance().getLanguageManager().getMessage("inventory.plusItem")
+                .replace("%normal%", BottledXP.getInstance().getIntFromConfig("inventory.plusAmountNormal").toString())
+                .replace("%shift%", BottledXP.getInstance().getIntFromConfig("inventory.plusAmountShift").toString());
+    }
 
     public static Inventory getInventory(Player player){
 
