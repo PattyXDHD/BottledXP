@@ -21,6 +21,7 @@ messages:
     - '&e/bottledxp info [Name]  &8-  &7Zeigt deine XP und Flaschen Infos an.'
     - '&e/bottledxp fill [Anzahl] &8-  &7Wandelt dein XP in Flaschen um.'
     - '&e/bottledxp gui  &8-  &7Öffnet die BottledXP-GUI.'
+    - '&e/bottledxp convert  &8-  &7Wandelt deine XP-Flaschen in normale XP um.'
     - ''
   info:
     - ''
@@ -45,6 +46,8 @@ messages:
   filledAmount: '&aDu hast &e%filled% &aXP-Flaschen abgefüllt.'
   useHelp: '&4Nutze &e/bottledxp help &4für Hilfe.'
   playerNotOnline: '&cDer Spieler &e%name% &cist nicht Online.'
+  convertNoXPBottles: '&cDu hast keine XP-Flaschen im Inventar.'
+  convertSuccessful: '&aDu hast &e%bottles% &aXP-Flaschen in XP umgewandelt.'
 
 # Messages for Interaction
 blockInteractFill:

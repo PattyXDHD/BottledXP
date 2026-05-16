@@ -12,7 +12,7 @@ import org.bukkit.inventory.PlayerInventory;
 public class XPUtils {
 
     @Getter @Setter
-    public static int xpAmount = 10;
+    public static int xpAmount = 7;
 
     public static int getBottles(Player player) {
         int xp = getCurrentExp(player);
@@ -155,6 +155,54 @@ public class XPUtils {
         int xpForLevel = getXpToNextLevel(level);
 
         return (int) (progress * xpForLevel);
+    }
+
+    public static void convertBottlesToXp(Player player){
+        PlayerInventory inventory = player.getInventory();
+
+        int bottles = 0;
+        ItemStack[] contents = inventory.getStorageContents();
+
+        for (int i = 0; i < contents.length; i++) {
+            ItemStack item = contents[i];
+
+            if (item == null || item.getType() != Material.EXPERIENCE_BOTTLE) {
+                continue;
+            }
+
+            bottles += item.getAmount();
+            contents[i] = null;
+        }
+
+        if (bottles <= 0) {
+            return;
+        }
+
+        inventory.setStorageContents(contents);
+
+        int xpToAdd = bottles * Math.max(1, xpAmount);
+        int currentXp = getCurrentExp(player);
+
+        setTotalExperience(player, currentXp + xpToAdd);
+    }
+
+    public static int getInventoryBottleAmount(Player player){
+        PlayerInventory inventory = player.getInventory();
+
+        int bottles = 0;
+        ItemStack[] contents = inventory.getStorageContents();
+
+        for (int i = 0; i < contents.length; i++) {
+            ItemStack item = contents[i];
+
+            if (item == null || item.getType() != Material.EXPERIENCE_BOTTLE) {
+                continue;
+            }
+
+            bottles += item.getAmount();
+            contents[i] = null;
+        }
+        return bottles;
     }
 
 }

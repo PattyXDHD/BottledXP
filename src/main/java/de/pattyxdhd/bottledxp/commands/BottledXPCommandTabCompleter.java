@@ -12,7 +12,7 @@ import java.util.List;
 
 public class BottledXPCommandTabCompleter implements TabCompleter {
 
-    private static final List<String> commandList = Arrays.asList("help", "info", "reload", "fill", "gui");
+    private static final List<String> commandList = Arrays.asList("help", "info", "reload", "fill", "gui", "convert");
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
@@ -41,11 +41,12 @@ public class BottledXPCommandTabCompleter implements TabCompleter {
             return suggestions;
         }
 
+        // TODO: fix the tab complete for Player Names that don't match the Case
         if (args.length == 2 && args[0].equalsIgnoreCase("info")) {
             List<String> suggestions = new ArrayList<>();
             for (Player n : Bukkit.getOnlinePlayers()) {
                 String str = String.valueOf(n.getName());
-                if (str.startsWith(args[1]))
+                if (str.startsWith((args[1])))
                     suggestions.add(str);
             }
             return suggestions;

@@ -43,11 +43,35 @@ public class BottledXPCommand implements CommandExecutor {
                 case "fill": handelFill(player, args); return false;
                 case "reload": reloadConfig(player); return false;
                 case "gui": openGui(player);return false;
+                case "convert": convertBottlesToXP(player); return false;
                 default: sendHelp(player); return false;
             }
         }
 
         return false;
+    }
+
+    private void convertBottlesToXP(Player player) {
+
+        if (!player.hasPermission("bottledxp.convert")){
+            player.sendMessage(BottledXP.getInstance().getNoPerm());
+            BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
+            return;
+        }
+
+        int amount = XPUtils.getInventoryBottleAmount(player);
+
+        if (amount <= 0){
+            player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.convertNoXPBottles"));
+            BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
+            return;
+        }
+
+        XPUtils.convertBottlesToXp(player);
+        player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.convertSuccessful")
+                .replace("%bottles%", String.valueOf(amount)));
+        BottledXP.getInstance().playConfigSound(player, "sounds.successfulSound");
+
     }
 
     private void sendHelp(Player player) {

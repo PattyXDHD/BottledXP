@@ -70,9 +70,7 @@ public class LanguageManager {
 
         String prefix = languageConfig.getString("messages.prefix");
 
-        messages.forEach(message -> {
-            messagesConverted.add(ChatColor.translateAlternateColorCodes('&', message.replace("%prefix%", prefix)));
-        });
+        messages.forEach(message -> messagesConverted.add(ChatColor.translateAlternateColorCodes('&', message.replace("%prefix%", prefix))));
 
         return messagesConverted;
     }

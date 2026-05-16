@@ -102,15 +102,15 @@ public class BottledXP extends JavaPlugin {
         return (float) getConfig().getDouble(configPath);
     }
 
-    public List<String> getStringListFromConfig(String configPath){
-        List<String> output = getConfig().getStringList(configPath);
-        if (output == null) return Lists.newArrayList("§c<Missing config entry.");
-        List<String> outputWithColor = Lists.newArrayList();
-        for (String out : output){
-            outputWithColor.add(ChatColor.translateAlternateColorCodes('&', out).replaceAll("%prefix%", getPrefix()));
-        }
-        return outputWithColor;
-    }
+//    public List<String> getStringListFromConfig(String configPath){
+//        List<String> output = getConfig().getStringList(configPath);
+//        if (output == null) return Lists.newArrayList("§c<Missing config entry.");
+//        List<String> outputWithColor = Lists.newArrayList();
+//        for (String out : output){
+//            outputWithColor.add(ChatColor.translateAlternateColorCodes('&', out).replaceAll("%prefix%", getPrefix()));
+//        }
+//        return outputWithColor;
+//    }
 
     public void playConfigSound(Player player, String configPath){
         boolean use = getBooleanFromConfig("sounds.use");

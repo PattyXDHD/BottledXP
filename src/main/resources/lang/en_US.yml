@@ -20,6 +20,7 @@ messages:
     - '&e/bottledxp info [Name]  &8-  &7Displays your XP and bottle details.'
     - '&e/bottledxp fill [Anzahl] &8-  &7Convert your XP into bottles.'
     - '&e/bottledxp gui  &8-  &7Opens the BottledXP-GUI.'
+    - '&e/bottledxp convert  &8-  &7Converts all your XP-Bottles to normal XP.'
     - ''
   info:
     - ''
@@ -44,6 +45,8 @@ messages:
   filledAmount: '&aYou have filled &e%filled% &aXP-Bottles.'
   useHelp: '&4Use &e/bottledxp help &4for help.'
   playerNotOnline: '&cThe player &e%name% &cisn''t online.'
+  convertNoXPBottles: '&cYou don''t have any XP bottles in your inventory.'
+  convertSuccessful: '&aYou have converted &e%bottles% &aXP-Bottles into XP.'
 
 # Messages for Interaction
 blockInteractFill:
