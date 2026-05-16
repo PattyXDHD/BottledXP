@@ -5,6 +5,7 @@ import com.google.common.cache.CacheBuilder;
 import de.pattyxdhd.bottledxp.BottledXP;
 import de.pattyxdhd.bottledxp.inventory.BottleInventory;
 import de.pattyxdhd.bottledxp.utils.XPUtils;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -28,7 +29,14 @@ public class InventoryListener implements Listener {
 
         if (event.getView().getTitle().equals(BottledXP.getInstance().getLanguageManager().getMessage("inventory.inventoryName"))){
 
-            if (event.getClickedInventory() != null && event.getClickedInventory().equals(event.getView().getTopInventory())){
+            if (event.getCurrentItem() == null) return;
+            if (event.getClickedInventory() == null) return;
+
+            if (event.getClickedInventory().equals(event.getView().getTopInventory())){
+                event.setCancelled(true);
+            }
+
+            if (event.getCurrentItem().getType() == Material.EXPERIENCE_BOTTLE){
                 event.setCancelled(true);
             }
 
@@ -93,6 +101,23 @@ public class InventoryListener implements Listener {
 
                 player.closeInventory();
                 amountHandler.asMap().remove(player.getUniqueId().toString());
+                return;
+            } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(BottledXP.getInstance().getLanguageManager().getMessage("inventory.convertItem"))){
+
+                int converted = XPUtils.getInventoryBottleAmount(player);
+
+                if (converted <= 0){
+                    player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.convertNoXPBottles"));
+                    BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
+                    player.closeInventory();
+                    return;
+                }
+
+                XPUtils.convertBottlesToXp(player);
+                player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.convertSuccessful")
+                        .replace("%bottles%", String.valueOf(converted)));
+                BottledXP.getInstance().playConfigSound(player, "sounds.successfulSound");
+                player.closeInventory();
                 return;
             }
 

@@ -68,8 +68,14 @@ public class BottledXPCommand implements CommandExecutor {
         }
 
         XPUtils.convertBottlesToXp(player);
+
+        int levels = player.getLevel();
+        int points = XPUtils.getCurrentLevelXp(player);
+
         player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.convertSuccessful")
-                .replace("%bottles%", String.valueOf(amount)));
+                .replace("%bottles%", String.valueOf(amount))
+                .replace("%level%", String.valueOf(levels))
+                .replace("%points%", String.valueOf(points)));
         BottledXP.getInstance().playConfigSound(player, "sounds.successfulSound");
 
     }

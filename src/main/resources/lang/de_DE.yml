@@ -47,17 +47,23 @@ messages:
   useHelp: '&4Nutze &e/bottledxp help &4für Hilfe.'
   playerNotOnline: '&cDer Spieler &e%name% &cist nicht Online.'
   convertNoXPBottles: '&cDu hast keine XP-Flaschen im Inventar.'
-  convertSuccessful: '&aDu hast &e%bottles% &aXP-Flaschen in XP umgewandelt.'
+  convertSuccessful: '&aDu hast &e%bottles% &aXP-Flaschen in XP umgewandelt. &7(%level% Level / %points% XP-Punkte)'
 
-# Messages for Interaction
+# Messages for Interaction Fill
 blockInteractFill:
   filledMessage: '&aDu kannst noch &e%bottles% &aXP-Flaschen füllen.'
   filledAllMessage: '&aDu hast insgesamt &e%bottles% &aXP-Flaschen abgefüllt.'
-  hotbarMessageNoPerm: '&4Dazu hast du keinen Zugriff.'
+  hotbarMessageNoPerm: '&cDazu hast du keinen Zugriff.'
   notEnoughXP: '&cDu hast nicht genügend XP.'
   notEnoughSpace: '&cDu hast nicht genügend Platz im Inventar.'
   infoTitleFirstLine: '&e%bottles% &aXP-Flaschen befüllbar.'
   infoTitleSecondLine: '&7Dein XP: &e%xp% &7XP &8| &7Plätze im Inventar: &e%space%'
+
+# Messages for Interaction Convert
+blockInteractConvert:
+  hotbarMessageNoPerm: '&cDazu hast du keinen Zugriff.'
+  convertNoXPBottles: '&cDu hast keine XP-Flaschen im Inventar.'
+  convertSuccessful: '&aDu hast &e%bottles% &aXP-Flaschen in XP umgewandelt.'
 
 # Text and Messages for the inventory GUI
 inventory:
@@ -69,10 +75,17 @@ inventory:
     - '&7Platz für &e%space% &7XP-Flaschen.'
     - '&aDu kannst &e%bottles% &aXP-Flaschen füllen.'
     - ''
-  applyItem: '&aKlicke zum umwandeln.'
+  applyItem: '&aKlicke um XP zu XP-Flaschen umzuwandeln.'
   minusItem: '&c- %normal% &7(ShiftClick: -%shift%)'
   plusItem: '&a+ %normal% &7(ShiftClick: +%shift%)'
   mathLore:
     - ''
     - '  &7Du bekommst &e%bottle% &7XP-Flaschen.  '
+    - '    &7- Nach dem umwandeln: &a%level% &7Level / &a%points% &7XP-Punkte'
+    - ''
+  convertItem: '&aKlicke um XP-Flaschen zu XP umzuwandeln.'
+  convertItemMathLore:
+    - ''
+    - '  &7Du kannst &e%bottles% &7XP-Flaschen in XP umwandeln. '
+    - '    &7- Nach dem umwandeln: &a%level% &7Level / &a%points% &7XP-Punkte'
     - ''

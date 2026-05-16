@@ -36,6 +36,9 @@ permissions:
   bottledxp.interact.completeLevel:
     info: Allows you to interact for transfers all your XP to Bottles
 
+  bottledxp.interact.convert:
+    info: Allows you to interact for Convert all the XP-Bottles in your Inventory to normal XP
+
   bottledxp.convert:
     info: Allows you to Convert all the XP-Bottles in your Inventory to normal XP
 
@@ -53,3 +56,4 @@ permissions:
     children:
       bottledxp.interact: true
       bottledxp.interact.completeLevel: true
+      bottledxp.interact.convert: true

@@ -28,6 +28,9 @@ sounds:
   helpSound: 'ENTITY_ITEM_PICKUP'
   failChangeGuiNumber: 'BLOCK_ANVIL_PLACE'
 
+# disables the interaction and replaces it with the GUI
+replaceInteractWithGUI: false
+
 # Use a block interaction to fill XP bottles.
 # List of all materials: https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html
 blockInteractFill:
@@ -35,10 +38,13 @@ blockInteractFill:
   block: 'EMERALD_BLOCK'
   usedItem: 'GLASS_BOTTLE'
   bottlesPerClick: 1
-  useHotbarMessage: true
   infoTitleStayTime: 5
-  useSound: true
-  replaceWithGUI: false
+
+# Use a block interaction to Convert your XP-Bottles to normal XP
+blockInteractConvert:
+  use: true
+  block: 'EMERALD_BLOCK'
+  usedItem: 'EXPERIENCE_BOTTLE'
 
 # Change the calculation quantity in the inventory.
 inventory:

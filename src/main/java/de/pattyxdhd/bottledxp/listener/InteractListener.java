@@ -19,7 +19,64 @@ import org.bukkit.inventory.ItemStack;
 public class InteractListener implements Listener {
 
     @EventHandler
-    public void onBlockRightClick(PlayerInteractEvent event){
+    public void onBlockRightClickForConvert(PlayerInteractEvent event){
+
+        Player player = event.getPlayer();
+        Block block = event.getClickedBlock();
+
+        if (event.getAction() != Action.RIGHT_CLICK_BLOCK) return;
+        if (event.getHand() != EquipmentSlot.HAND) return;
+        if (!BottledXP.getInstance().getBooleanFromConfig("blockInteractConvert.use")) return;
+        if (block == null) return;
+
+        String blockString = BottledXP.getInstance().getStringFromConfig("blockInteractConvert.block");
+        Material blockMaterial = Material.matchMaterial(blockString);
+        String itemString = BottledXP.getInstance().getStringFromConfig("blockInteractConvert.usedItem");
+        Material itemMaterial = Material.matchMaterial(itemString);
+
+        if (blockMaterial == null || block.getType() != blockMaterial) return;
+
+        ItemStack hand = event.getItem();
+        if (hand == null || hand.getType() != itemMaterial) return;
+
+        if (!player.hasPermission("bottledxp.interact.convert")) {
+            event.setCancelled(true);
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getLanguageManager().getMessage("blockInteractConvert.hotbarMessageNoPerm").replace("%prefix%", BottledXP.getInstance().getPrefix())));
+            BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
+            return;
+        }
+
+        event.setCancelled(true);
+
+        if (BottledXP.getInstance().getBooleanFromConfig("replaceInteractWithGUI")){
+//            if (!player.hasPermission("bottledxp.gui")){
+//                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getLanguageManager().getMessage("blockInteractConvert.hotbarMessageNoPerm").replace("%prefix%", BottledXP.getInstance().getPrefix())));
+//                BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
+//                return;
+//            }
+            player.openInventory(BottleInventory.getInventory(player));
+            return;
+        }
+
+        int amount = XPUtils.getInventoryBottleAmount(player);
+
+        if (amount <= 0){
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getLanguageManager().getMessage("blockInteractConvert.convertNoXPBottles")
+                    .replace("%prefix%", BottledXP.getInstance().getPrefix())));
+            BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
+            return;
+        }
+
+        XPUtils.convertBottlesToXp(player);
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getLanguageManager().getMessage("blockInteractConvert.convertSuccessful")
+                .replace("%prefix%", BottledXP.getInstance().getPrefix())
+                .replace("%bottles%", String.valueOf(amount))));
+        BottledXP.getInstance().playConfigSound(player, "sounds.successfulSound");
+
+    }
+
+    @EventHandler
+    public void onBlockRightClickForFill(PlayerInteractEvent event){
 
         Player player = event.getPlayer();
         Block block = event.getClickedBlock();
@@ -40,19 +97,20 @@ public class InteractListener implements Listener {
         if (hand == null || hand.getType() != itemMaterial) return;
 
         if (!player.hasPermission("bottledxp.interact.fill")) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getLanguageManager().getMessage("blockInteractFill.hotbarMessageNoPerm").replace("%prefix%", BottledXP.getInstance().getPrefix())));
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getLanguageManager().getMessage("blockInteractFill.hotbarMessageNoPerm")
+                    .replace("%prefix%", BottledXP.getInstance().getPrefix())));
             BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
             return;
         }
 
         event.setCancelled(true);
 
-        if (BottledXP.getInstance().getBooleanFromConfig("blockInteractFill.replaceWithGUI")){
-            if (!player.hasPermission("bottledxp.gui")){
-                player.sendMessage(BottledXP.getInstance().getNoPerm());
-                BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
-                return;
-            }
+        if (BottledXP.getInstance().getBooleanFromConfig("replaceInteractWithGUI")){
+//            if (!player.hasPermission("bottledxp.gui")){
+//                player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getLanguageManager().getMessage("blockInteractFill.hotbarMessageNoPerm").replace("%prefix%", BottledXP.getInstance().getPrefix())));
+//                BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
+//                return;
+//            }
             player.openInventory(BottleInventory.getInventory(player));
             return;
         }
@@ -102,14 +160,8 @@ public class InteractListener implements Listener {
         }
 
         XPUtils.fillExactAmount(player, toFill);
-
-        if (BottledXP.getInstance().getBooleanFromConfig("blockInteractFill.useHotbarMessage")) {
-            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getLanguageManager().getMessage("blockInteractFill.filledMessage").replace("%bottles%", String.valueOf(XPUtils.getBottles(player)))));
-        }
-
-        if (BottledXP.getInstance().getBooleanFromConfig("blockInteractFill.useSound")) {
-            BottledXP.getInstance().playConfigSound(player, "sounds.successfulSound");
-        }
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(BottledXP.getInstance().getLanguageManager().getMessage("blockInteractFill.filledMessage").replace("%bottles%", String.valueOf(XPUtils.getBottles(player)))));
+        BottledXP.getInstance().playConfigSound(player, "sounds.successfulSound");
 
     }
 

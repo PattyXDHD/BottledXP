@@ -46,17 +46,23 @@ messages:
   useHelp: '&4Use &e/bottledxp help &4for help.'
   playerNotOnline: '&cThe player &e%name% &cisn''t online.'
   convertNoXPBottles: '&cYou don''t have any XP bottles in your inventory.'
-  convertSuccessful: '&aYou have converted &e%bottles% &aXP-Bottles into XP.'
+  convertSuccessful: '&aYou have converted &e%bottles% &aXP-Bottles into XP. &7(%level% levels / %points% XP-Points)'
 
-# Messages for Interaction
+# Messages for Interaction Fill
 blockInteractFill:
   filledMessage: '&aYou can still fill &e%bottles% &aXP-Bottles.'
   filledAllMessage: '&aYou have filled &e%bottles% &aXP-Bottles.'
-  hotbarMessageNoPerm: '&4You don''t have Permission for that.'
+  hotbarMessageNoPerm: '&cYou don''t have Permission for that.'
   notEnoughXP: '&cYou don''t have enough XP.'
   notEnoughSpace: '&cYou don''t have enough space in your inventory.'
   infoTitleFirstLine: '&e%bottles% XP-Bottles &acan be filled.'
   infoTitleSecondLine: '&7Your XP: &e%xp% &7XP &8| &7Inventory slots: &e%space%'
+
+# Messages for Interaction Convert
+blockInteractConvert:
+  hotbarMessageNoPerm: '&cYou don''t have Permission for that.'
+  convertNoXPBottles: '&cYou don''t have any XP bottles in your inventory.'
+  convertSuccessful: '&aYou have converted &e%bottles% &aXP-Bottles into XP.'
 
 # Text and Messages for the inventory GUI
 inventory:
@@ -68,10 +74,17 @@ inventory:
     - '&7Space for &e%space% &7XP-Bottles.'
     - '&aYou can fill &e%bottles% &aXP-Bottles.'
     - ''
-  applyItem: '&aClick to convert.'
+  applyItem: '&aClick to convert XP into XP bottles.'
   minusItem: '&c- %normal% &7(ShiftClick: -%shift%)'
   plusItem: '&a+ %normal% &7(ShiftClick: +%shift%)'
   mathLore:
     - ''
     - '  &7You''ll receive &e%bottle% &7XP-Bottles.  '
+    - '    &7- After convert: &a%level% &7Levels / &a%points% &7XP-Points'
+    - ''
+  convertItem: '&aClick to convert XP-Bottles into XP.'
+  convertItemMathLore:
+    - ''
+    - '  &7You can convert &e%bottles% &7XP-Bottles into XP.  '
+    - '    &7- After convert: &a%level% &7Levels / &a%points% &7XP-Points'
     - ''

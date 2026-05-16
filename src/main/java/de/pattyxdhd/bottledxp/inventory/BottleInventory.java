@@ -42,7 +42,9 @@ public class BottleInventory {
         ArrayList<String> mathLore = Lists.newArrayList();
 
         BottledXP.getInstance().getLanguageManager().getMessageList("inventory.mathLore").forEach(s -> mathLore.add(s
-                .replace("%bottle%", "1")));
+                .replace("%bottle%", "1")
+                .replace("%level%", String.valueOf(XPUtils.getPreviewLevelAfterFill(player, 1)))
+                .replace("%points%", String.valueOf(XPUtils.getPreviewPointsAfterFill(player, 1)))));
 
         //set apply button
         ItemStack applyItem = ItemBuilder.normal()
@@ -61,7 +63,7 @@ public class BottleInventory {
                 .replace("%level%", String.valueOf(levels))
                 .replace("%points%", String.valueOf(points))));
         ItemStack infoItem = ItemBuilder.normal()
-                .setMaterial(Material.EXPERIENCE_BOTTLE)
+                .setMaterial(Material.GLASS_BOTTLE)
                 .setDisplayName(BottledXP.getInstance().getLanguageManager().getMessage("inventory.infoItemName"))
                 .setLore(infoItemLore)
                 .build();
@@ -91,6 +93,23 @@ public class BottleInventory {
                 .build();
         bottleInventory.setItem(15, plusItem);
 
+        // load convertMathLore
+        ArrayList<String> convertMathLore = Lists.newArrayList();
+        int bottlesAmount = XPUtils.getInventoryBottleAmount(player);
+
+        BottledXP.getInstance().getLanguageManager().getMessageList("inventory.convertItemMathLore").forEach(s -> convertMathLore.add(s
+                .replace("%bottles%", String.valueOf(bottlesAmount))
+                .replace("%level%", String.valueOf(XPUtils.getPreviewLevelAfterBottleConvert(player, bottlesAmount)))
+                .replace("%points%", String.valueOf(XPUtils.getPreviewPointsAfterBottleConvert(player, bottlesAmount)))));
+
+        //set convert button
+        ItemStack convertItem = ItemBuilder.normal()
+                .setMaterial(Material.EXPERIENCE_BOTTLE)
+                .setDisplayName(BottledXP.getInstance().getLanguageManager().getMessage("inventory.convertItem"))
+                .setLore(convertMathLore)
+                .build();
+        bottleInventory.setItem(26, convertItem);
+
         return bottleInventory;
     }
 
@@ -98,14 +117,15 @@ public class BottleInventory {
     public static void updateMathButtons(Player player, int math){
 
         if (!player.getOpenInventory().getTitle().equals(BottledXP.getInstance().getLanguageManager().getMessage("inventory.inventoryName"))){
-            Bukkit.getConsoleSender().sendMessage("FEHLER #1111");
             return;
         }
 
         ArrayList<String> mathLore = Lists.newArrayList();
 
         BottledXP.getInstance().getLanguageManager().getMessageList("inventory.mathLore").forEach(s -> mathLore.add(s
-                .replace("%bottle%", String.valueOf(math))));
+                .replace("%bottle%", String.valueOf(math))
+                .replace("%level%", String.valueOf(XPUtils.getPreviewLevelAfterFill(player, math)))
+                .replace("%points%", String.valueOf(XPUtils.getPreviewPointsAfterFill(player, math)))));
 
         //set apply button
         ItemStack applyItem = ItemBuilder.normal()

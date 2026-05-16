@@ -205,4 +205,67 @@ public class XPUtils {
         return bottles;
     }
 
+    public static int getPreviewLevelAfterFill(Player player, int bottles) {
+        int xpPerBottle = Math.max(1, xpAmount);
+        int totalXp = getCurrentExp(player) - bottles * xpPerBottle;
+
+        totalXp = Math.max(0, totalXp);
+
+        int level = 0;
+
+        while (totalXp >= getExpToNextLevel(level)) {
+            totalXp -= getExpToNextLevel(level);
+            level++;
+        }
+
+        return level;
+    }
+
+    public static int getPreviewPointsAfterFill(Player player, int bottles) {
+        int xpPerBottle = Math.max(1, xpAmount);
+        int totalXp = getCurrentExp(player) - bottles * xpPerBottle;
+
+        totalXp = Math.max(0, totalXp);
+
+        int level = 0;
+
+        while (totalXp >= getExpToNextLevel(level)) {
+            totalXp -= getExpToNextLevel(level);
+            level++;
+        }
+
+        return totalXp;
+    }
+
+
+    public static int getPreviewLevelAfterBottleConvert(Player player, int bottles) {
+        int xpPerBottle = Math.max(1, xpAmount);
+        int totalXp = getCurrentExp(player) + bottles * xpPerBottle;
+
+        int level = 0;
+
+        while (totalXp >= getExpToNextLevel(level)) {
+            totalXp -= getExpToNextLevel(level);
+            level++;
+        }
+
+        return level;
+    }
+
+    public static int getPreviewPointsAfterBottleConvert(Player player, int bottles) {
+        int xpPerBottle = Math.max(1, xpAmount);
+        int totalXp = getCurrentExp(player) + bottles * xpPerBottle;
+
+        int level = 0;
+
+        while (totalXp >= getExpToNextLevel(level)) {
+            totalXp -= getExpToNextLevel(level);
+            level++;
+        }
+
+        return totalXp;
+    }
+
+
+
 }
