@@ -23,7 +23,7 @@ public class BottleInventory {
     @Getter
     private static String plusItemName;
 
-    public static void loadItemNames(){
+    public static void loadItemNames() {
         minusItemName = BottledXP.getInstance().getLanguageManager().getMessage("inventory.minusItem")
                 .replace("%normal%", BottledXP.getInstance().getIntFromConfig("inventory.minusAmountNormal").toString())
                 .replace("%shift%", BottledXP.getInstance().getIntFromConfig("inventory.minusAmountShift").toString());
@@ -33,7 +33,7 @@ public class BottleInventory {
                 .replace("%shift%", BottledXP.getInstance().getIntFromConfig("inventory.plusAmountShift").toString());
     }
 
-    public static Inventory getInventory(Player player){
+    public static Inventory getInventory(Player player) {
 
         int xp = XPUtils.getCurrentExp(player);
         int space = XPUtils.getAvailableBottleSpace(player.getInventory());
@@ -43,11 +43,13 @@ public class BottleInventory {
 
         Inventory bottleInventory = Bukkit.createInventory(player, 27, BottledXP.getInstance().getLanguageManager().getMessage("inventory.inventoryName"));
 
+        int bottles = Math.min(bottlesByXp, 1);
+
         // load mathLore
         ArrayList<String> mathLore = Lists.newArrayList();
 
         BottledXP.getInstance().getLanguageManager().getMessageList("inventory.mathLore").forEach(s -> mathLore.add(s
-                .replace("%bottle%", "1")
+                .replace("%bottle%", String.valueOf(bottles))
                 .replace("%level%", String.valueOf(XPUtils.getPreviewLevelAfterFill(player, 1)))
                 .replace("%points%", String.valueOf(XPUtils.getPreviewPointsAfterFill(player, 1)))));
 
@@ -119,9 +121,9 @@ public class BottleInventory {
     }
 
 
-    public static void updateMathButtons(Player player, int math){
+    public static void updateMathButtons(Player player, int math) {
 
-        if (!player.getOpenInventory().getTitle().equals(BottledXP.getInstance().getLanguageManager().getMessage("inventory.inventoryName"))){
+        if (!player.getOpenInventory().getTitle().equals(BottledXP.getInstance().getLanguageManager().getMessage("inventory.inventoryName"))) {
             return;
         }
 

@@ -9,46 +9,102 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.inventory.InventoryClickEvent;
-import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.*;
+import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemStack;
 
 public class InventoryListener implements Listener {
 
     private static final Cache<String, Integer> amountHandler = CacheBuilder.newBuilder().build();
 
     @EventHandler
-    public void onInventoryClickEvent(InventoryClickEvent event){
+    public void onInventoryClickEvent(InventoryClickEvent event) {
+
+        if (!event.getView().getTitle().equals(BottledXP.getInstance().getLanguageManager().getMessage("inventory.inventoryName")))
+            return;
+
+        if (event.getClickedInventory() == null) return;
 
         Player player = (Player) event.getWhoClicked();
 
-        if (!amountHandler.asMap().containsKey(player.getUniqueId().toString())){
-            amountHandler.put(player.getUniqueId().toString(), 1);
+        Inventory topInventory = event.getView().getTopInventory();
+
+        boolean top = event.getRawSlot() < topInventory.getSize();
+
+        ItemStack currentItem = event.getCurrentItem();
+        ItemStack cursor = event.getCursor();
+
+        // SHIFT KLICKS BLOCKIEREN
+        if (event.getAction() == InventoryAction.MOVE_TO_OTHER_INVENTORY) {
+            event.setCancelled(true);
         }
 
-        int amount = amountHandler.asMap().get(player.getUniqueId().toString());
+        // HOTBAR SWAP BLOCKIEREN
+        if (event.getClick() == ClickType.NUMBER_KEY) {
+            event.setCancelled(true);
+            return;
+        }
 
-        if (event.getView().getTitle().equals(BottledXP.getInstance().getLanguageManager().getMessage("inventory.inventoryName"))){
+        // ITEMS INS GUI LEGEN BLOCKIEREN
+        if (top) {
 
-            if (event.getCurrentItem() == null) return;
-            if (event.getClickedInventory() == null) return;
-
-            if (event.getClickedInventory().equals(event.getView().getTopInventory())){
+            // Wenn Cursor ein Item hält -> blockieren
+            if (cursor != null && cursor.getType() != Material.AIR) {
                 event.setCancelled(true);
-            }
-
-            if (event.getCurrentItem().getType() == Material.EXPERIENCE_BOTTLE){
-                event.setCancelled(true);
-            }
-
-            if (event.getCurrentItem() == null){
                 return;
             }
 
-            if (event.getCurrentItem().getItemMeta().getDisplayName().equals(BottleInventory.getMinusItemName())) {
-                if (amount >= 2){
-                    if (event.isShiftClick()){
-                        amount=amount-BottledXP.getInstance().getIntFromConfig("inventory.minusAmountShift");
-                        if (amount < 1){
+            // GUI grundsätzlich readonly
+            event.setCancelled(true);
+
+            // AB HIER DEINE GUI BUTTONS
+            if (currentItem == null || currentItem.getType() == Material.AIR) {
+                return;
+            }
+
+            if (!currentItem.hasItemMeta()) {
+                return;
+            }
+
+            if (!currentItem.getItemMeta().hasDisplayName()) {
+                return;
+            }
+
+            int bottles = Math.min(XPUtils.getBottles(player), 1);
+
+            if (!amountHandler.asMap().containsKey(player.getUniqueId().toString())) {
+                amountHandler.put(player.getUniqueId().toString(), bottles);
+            }
+
+            int amount = amountHandler.asMap().get(player.getUniqueId().toString());
+
+            String name = currentItem.getItemMeta().getDisplayName();
+
+            // PLUS BUTTON
+            if (name.equals(BottleInventory.getPlusItemName())) {
+                if (amount <= XPUtils.getBottles(player) - 1) {
+                    if (event.isShiftClick()) {
+                        amount = amount + BottledXP.getInstance().getIntFromConfig("inventory.plusAmountShift");
+                        if (amount >= XPUtils.getBottles(player) - 1) {
+                            amount = XPUtils.getBottles(player);
+                            BottledXP.getInstance().playConfigSound(player, "sounds.inventoryClickSound");
+                        }
+                    } else {
+                        amount++;
+                        BottledXP.getInstance().playConfigSound(player, "sounds.inventoryClickSound");
+                    }
+                } else {
+                    BottledXP.getInstance().playConfigSound(player, "sounds.failChangeGuiNumber");
+                }
+            }
+
+            // MINUS BUTTON
+            else if (name.equals(BottleInventory.getMinusItemName())) {
+
+                if (amount >= 2) {
+                    if (event.isShiftClick()) {
+                        amount = amount - BottledXP.getInstance().getIntFromConfig("inventory.minusAmountShift");
+                        if (amount < 1) {
                             amount = 1;
                             BottledXP.getInstance().playConfigSound(player, "sounds.inventoryClickSound");
                         }
@@ -59,22 +115,10 @@ public class InventoryListener implements Listener {
                 } else {
                     BottledXP.getInstance().playConfigSound(player, "sounds.failChangeGuiNumber");
                 }
-            } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(BottleInventory.getPlusItemName())) {
-                if (amount <= XPUtils.getBottles(player)-1){
-                    if (event.isShiftClick()){
-                        amount=amount+BottledXP.getInstance().getIntFromConfig("inventory.plusAmountShift");
-                        if (amount >= XPUtils.getBottles(player)-1){
-                            amount = XPUtils.getBottles(player);
-                            BottledXP.getInstance().playConfigSound(player, "sounds.inventoryClickSound");
-                        }
-                    }else {
-                        amount++;
-                        BottledXP.getInstance().playConfigSound(player, "sounds.inventoryClickSound");
-                    }
-                } else {
-                    BottledXP.getInstance().playConfigSound(player, "sounds.failChangeGuiNumber");
-                }
-            } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(BottledXP.getInstance().getLanguageManager().getMessage("inventory.applyItem"))){
+            }
+
+            // APPLY BUTTON
+            else if (name.equals(BottledXP.getInstance().getLanguageManager().getMessage("inventory.applyItem"))) {
 
                 int maxAllowed = 10000;
                 if (amount > maxAllowed) {
@@ -102,11 +146,13 @@ public class InventoryListener implements Listener {
                 player.closeInventory();
                 amountHandler.asMap().remove(player.getUniqueId().toString());
                 return;
-            } else if (event.getCurrentItem().getItemMeta().getDisplayName().equals(BottledXP.getInstance().getLanguageManager().getMessage("inventory.convertItem"))){
+            }
 
+            // CONVERT BUTTON
+            else if (name.equals(BottledXP.getInstance().getLanguageManager().getMessage("inventory.convertItem"))) {
                 int converted = XPUtils.getInventoryBottleAmount(player);
 
-                if (converted <= 0){
+                if (converted <= 0) {
                     player.sendMessage(BottledXP.getInstance().getPrefix() + BottledXP.getInstance().getLanguageManager().getMessage("messages.convertNoXPBottles"));
                     BottledXP.getInstance().playConfigSound(player, "sounds.failSound");
                     player.closeInventory();
@@ -125,14 +171,42 @@ public class InventoryListener implements Listener {
 
             amountHandler.asMap().put(player.getUniqueId().toString(), amount);
             BottleInventory.updateMathButtons(player, amount);
+            return;
         }
 
+        // =====================================================
+        // UNTEN: XP FLASCHEN SPERREN
+        // =====================================================
+
+        if (currentItem != null && currentItem.getType() == Material.EXPERIENCE_BOTTLE) {
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler
-    public void onInventoryClose(InventoryCloseEvent event){
-        if (event.getView().getTitle().equals(BottledXP.getInstance().getLanguageManager().getMessage("inventory.inventoryName"))){
+    public void onInventoryClose(InventoryCloseEvent event) {
+        if (event.getView().getTitle().equals(BottledXP.getInstance().getLanguageManager().getMessage("inventory.inventoryName"))) {
             amountHandler.asMap().remove(event.getPlayer().getUniqueId().toString());
+        }
+    }
+
+    @EventHandler
+    public void onInventoryDrag(InventoryDragEvent event) {
+
+        if (!event.getView().getTitle().equals(
+                BottledXP.getInstance().getLanguageManager().getMessage("inventory.inventoryName"))) {
+            return;
+        }
+
+        int topSize = event.getView().getTopInventory().getSize();
+
+        for (int slot : event.getRawSlots()) {
+
+            // Slot gehört zum oberen Inventar
+            if (slot < topSize) {
+                event.setCancelled(true);
+                return;
+            }
         }
     }
 

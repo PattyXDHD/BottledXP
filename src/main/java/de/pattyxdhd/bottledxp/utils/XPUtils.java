@@ -11,7 +11,8 @@ import org.bukkit.inventory.PlayerInventory;
 
 public class XPUtils {
 
-    @Getter @Setter
+    @Getter
+    @Setter
     public static int xpAmount = 7;
 
     public static int getBottles(Player player) {
@@ -24,15 +25,15 @@ public class XPUtils {
         int level = player.getLevel();
         float progress = player.getExp();
         int xp = getExpAtLevel(level);
-        xp += Math.round((float)getExpToNextLevel(level) * progress);
+        xp += Math.round((float) getExpToNextLevel(level) * progress);
         return Math.max(0, xp);
     }
 
     private static int getExpAtLevel(int level) {
         if (level >= 31) {
-            return (int)((double)4.5F * (double)level * (double)level - (double)162.5F * (double)level + (double)2220.0F);
+            return (int) ((double) 4.5F * (double) level * (double) level - (double) 162.5F * (double) level + (double) 2220.0F);
         } else {
-            return level >= 16 ? (int)((double)2.5F * (double)level * (double)level - (double)40.5F * (double)level + (double)360.0F) : level * level + 6 * level;
+            return level >= 16 ? (int) ((double) 2.5F * (double) level * (double) level - (double) 40.5F * (double) level + (double) 360.0F) : level * level + 6 * level;
         }
     }
 
@@ -47,7 +48,7 @@ public class XPUtils {
     public static int getAvailableBottleSpace(Inventory inventory) {
         int space = 0;
 
-        for(ItemStack item : inventory.getStorageContents()) {
+        for (ItemStack item : inventory.getStorageContents()) {
             if (item != null && item.getType() != Material.AIR) {
                 if (item.getType() == Material.EXPERIENCE_BOTTLE) {
                     space += 64 - item.getAmount();
@@ -79,7 +80,7 @@ public class XPUtils {
         if (count > 0) {
             ItemStack[] contents = inv.getStorageContents();
 
-            for(int i = 0; i < contents.length && count > 0; ++i) {
+            for (int i = 0; i < contents.length && count > 0; ++i) {
                 ItemStack it = contents[i];
                 if (it != null && it.getType() == Material.EXPERIENCE_BOTTLE && it.getAmount() < 64) {
                     int canAdd = Math.min(64 - it.getAmount(), count);
@@ -91,7 +92,7 @@ public class XPUtils {
             inv.setStorageContents(contents);
         }
 
-        while(count > 0) {
+        while (count > 0) {
             int stack = Math.min(64, count);
             ItemStack toAdd = new ItemStack(Material.EXPERIENCE_BOTTLE, stack);
             inv.addItem(toAdd);
@@ -107,12 +108,12 @@ public class XPUtils {
         int level = 0;
         int xp = totalXp;
 
-        while(true) {
+        while (true) {
             int toNext = getExpToNextLevel(level);
             if (xp < toNext) {
                 player.setLevel(level);
                 if (toNext > 0) {
-                    player.setExp((float)xp / (float)toNext);
+                    player.setExp((float) xp / (float) toNext);
                 } else {
                     player.setExp(0.0F);
                 }
@@ -157,7 +158,7 @@ public class XPUtils {
         return (int) (progress * xpForLevel);
     }
 
-    public static void convertBottlesToXp(Player player){
+    public static void convertBottlesToXp(Player player) {
         PlayerInventory inventory = player.getInventory();
 
         int bottles = 0;
@@ -186,7 +187,7 @@ public class XPUtils {
         setTotalExperience(player, currentXp + xpToAdd);
     }
 
-    public static int getInventoryBottleAmount(Player player){
+    public static int getInventoryBottleAmount(Player player) {
         PlayerInventory inventory = player.getInventory();
 
         int bottles = 0;
@@ -206,6 +207,11 @@ public class XPUtils {
     }
 
     public static int getPreviewLevelAfterFill(Player player, int bottles) {
+
+        if (bottles == 0) {
+            return 0;
+        }
+
         int xpPerBottle = Math.max(1, xpAmount);
         int totalXp = getCurrentExp(player) - bottles * xpPerBottle;
 
@@ -222,6 +228,11 @@ public class XPUtils {
     }
 
     public static int getPreviewPointsAfterFill(Player player, int bottles) {
+
+        if (bottles == 0) {
+            return 0;
+        }
+
         int xpPerBottle = Math.max(1, xpAmount);
         int totalXp = getCurrentExp(player) - bottles * xpPerBottle;
 
@@ -239,6 +250,11 @@ public class XPUtils {
 
 
     public static int getPreviewLevelAfterBottleConvert(Player player, int bottles) {
+
+        if (bottles == 0) {
+            return 0;
+        }
+
         int xpPerBottle = Math.max(1, xpAmount);
         int totalXp = getCurrentExp(player) + bottles * xpPerBottle;
 
@@ -253,6 +269,11 @@ public class XPUtils {
     }
 
     public static int getPreviewPointsAfterBottleConvert(Player player, int bottles) {
+
+        if (bottles == 0) {
+            return 0;
+        }
+
         int xpPerBottle = Math.max(1, xpAmount);
         int totalXp = getCurrentExp(player) + bottles * xpPerBottle;
 
@@ -265,7 +286,5 @@ public class XPUtils {
 
         return totalXp;
     }
-
-
 
 }
