@@ -9,12 +9,16 @@ import de.pattyxdhd.bottledxp.listener.InteractListener;
 import de.pattyxdhd.bottledxp.listener.InventoryListener;
 import de.pattyxdhd.bottledxp.utils.XPUtils;
 import lombok.Getter;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.Map;
 
 public class BottledXP extends JavaPlugin {
 
@@ -102,16 +106,6 @@ public class BottledXP extends JavaPlugin {
         return (float) getConfig().getDouble(configPath);
     }
 
-//    public List<String> getStringListFromConfig(String configPath){
-//        List<String> output = getConfig().getStringList(configPath);
-//        if (output == null) return Lists.newArrayList("§c<Missing config entry.");
-//        List<String> outputWithColor = Lists.newArrayList();
-//        for (String out : output){
-//            outputWithColor.add(ChatColor.translateAlternateColorCodes('&', out).replaceAll("%prefix%", getPrefix()));
-//        }
-//        return outputWithColor;
-//    }
-
     public void playConfigSound(Player player, String configPath){
         boolean use = getBooleanFromConfig("sounds.use");
         if (!use){
@@ -140,6 +134,41 @@ public class BottledXP extends JavaPlugin {
         }
 
         player.playSound(player.getLocation(), sound, volume, 1);
+    }
+
+    public void sendActionbar(Player player, String configPath){
+        String message = BottledXP.getInstance().getLanguageManager().getMessage(configPath);
+        if (hasSpigot()) {
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
+        } else {
+            if (!message.startsWith(prefix)) message = prefix + message;
+            player.sendMessage(message);
+        }
+    }
+
+    public void sendActionbar(Player player, String configPath, Map<String, String> replacements){
+        String message = BottledXP.getInstance().getLanguageManager().getMessage(configPath);
+        for (Map.Entry<String, String> entry : replacements.entrySet()) {
+            String s = entry.getKey();
+            String s2 = entry.getValue();
+            message = message.replace(s, s2);
+        }
+
+        if (hasSpigot()) {
+            player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(message));
+        } else {
+            if (!message.startsWith(prefix)) message = prefix + message;
+            player.sendMessage(message);
+        }
+    }
+
+    public static boolean hasSpigot() {
+        try {
+            Player.class.getMethod("spigot");
+            return true;
+        } catch (NoSuchMethodException exception) {
+            return false;
+        }
     }
 
 }
